@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sticky Cursor Effect</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+            cursor: none; /* Hide the default cursor */
+        }
+        
+        /* Content styles */
+        .content {
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: #aaaaaa;
+        }
+        
+        /* Custom cursor styles */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+        }
+        
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(180, 180, 180, 0.8);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 998;
+            transform: translate(-50%, -50%);
+            transition: transform 0.15s ease, width 0.2s ease, height 0.2s ease;
+        }
+        
+        /* Interactive elements */
+        a, button, .interactive {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid #ffffff;
+            display: inline-block;
+            margin-right: 1rem;
+            cursor: none;
+        }
+        
+        a:hover, button:hover, .interactive:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom cursor elements -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+    
+    <!-- Page content for demonstration -->
+    <div class="content">
+        <h1>Custom Sticky Cursor</h1>
+        <p>Move your mouse around to see the custom cursor in action. The cursor consists of a small white dot surrounded by a larger circular outline.</p>
+        <div>
+            <a href="#" class="interactive">Button 1</a>
+            <button class="interactive">Button 2</button>
+            <span class="interactive">Interactive Element</span>
+        </div>
+    </div>
+
+    <script>
+        // Get cursor elements
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+        
+        // Set initial position off-screen
+        cursorDot.style.opacity = 0;
+        cursorOutline.style.opacity = 0;
+        
+        // Mouse position tracking variables
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        // Smoothing variables for the outline
+        let outlineX = 0;
+        let outlineY = 0;
+        
+        // Track mouse position
+        document.addEventListener('mousemove', (e) => {
+            // Update mouse position
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Show cursors if they were hidden
+            if (cursorDot.style.opacity === '0') {
+                cursorDot.style.opacity = 1;
+                cursorOutline.style.opacity = 1;
+            }
+            
+            // Update dot position immediately
+            cursorDot.style.left = `${mouseX}px`;
+            cursorDot.style.top = `${mouseY}px`;
+        });
+        
+        // Handle cursor on interactive elements
+        const interactiveElements = document.querySelectorAll('a, button, .interactive');
+        
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                // Expand the outline on hover
+                cursorOutline.style.width = '60px';
+                cursorOutline.style.height = '60px';
+                cursorOutline.style.borderColor = 'rgba(255, 255, 255, 0.8)';
+                cursorDot.style.transform = 'translate(-50%, -50%) scale(1.5)';
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                // Return to normal size
+                cursorOutline.style.width = '40px';
+                cursorOutline.style.height = '40px';
+                cursorOutline.style.borderColor = 'rgba(180, 180, 180, 0.8)';
+                cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+            });
+        });
+        
+        // Animation loop for smooth cursor movement
+        function animateCursor() {
+            // Calculate smooth movement for outline with easing
+            const easing = 0.2;
+            outlineX += (mouseX - outlineX) * easing;
+            outlineY += (mouseY - outlineY) * easing;
+            
+            // Apply positions
+            cursorOutline.style.left = `${outlineX}px`;
+            cursorOutline.style.top = `${outlineY}px`;
+            
+            // Continue animation
+            requestAnimationFrame(animateCursor);
+        }
+        
+        // Start animation
+        animateCursor();
+        
+        // Hide cursor when mouse leaves window
+        document.addEventListener('mouseout', (e) => {
+            if (e.relatedTarget === null) {
+                cursorDot.style.opacity = 0;
+                cursorOutline.style.opacity = 0;
+            }
+        });
+        
+        // Show cursor when mouse enters window
+        document.addEventListener('mouseover', () => {
+            cursorDot.style.opacity = 1;
+            cursorOutline.style.opacity = 1;
+        });
+    </script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResearchAI - Transform Your Research with AI Power</title>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+  <style>
+    /* Base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    html::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    html::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    html::-webkit-scrollbar-thumb {
+        background: var(--line-clr);
+        border-radius: 4px;
+    }
+
+    html::-webkit-scrollbar-thumb:hover {
+        background: var(--secondary-text-clr);
+    }
+
+    .bg-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: 30px 30px;
+      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      z-index: -1;
+    }
+
+    /* Navbar styles */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+      backdrop-filter: blur(4px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      z-index: 10;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: white;
+    }
+
+    .logo-icon {
+      color: #a855f7;
+    }
+
+    .logo-text {
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+
+    .nav-links {
+      display: none;
+    }
+
+    .nav-link {
+      color: #d1d5db;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    .nav-link:hover {
+      color: white;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: #a855f7;
+      transition: width 0.3s;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .auth-buttons {
+      display: none;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+      font-size: 0.875rem;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: white;
+    }
+
+    .btn-ghost:hover {
+      color: #a855f7;
+    }
+
+    .btn-primary {
+      background-color: #9333ea;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #7e22ce;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #a855f7;
+      color: white;
+    }
+
+    .btn-outline:hover {
+      background-color: rgba(168, 85, 247, 0.2);
+    }
+
+    .menu-button {
+      background: transparent;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 1.5rem;
+      z-index: 101; /* Higher than sidebar */
+    }
+
+    /* Mobile Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -280px; /* Start off-screen */
+      width: 280px;
+      height: 100vh;
+      background-color: rgba(17, 17, 17, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+      padding: 5rem 1.5rem 2rem;
+      overflow-y: auto;
+    }
+
+    .sidebar.open {
+      left: 0;
+    }
+
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 99;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .sidebar-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      color: #d1d5db;
+      text-decoration: none;
+      border-radius: 0.375rem;
+      transition: all 0.3s;
+      font-size: 1.125rem;
+      opacity: 0;
+      transform: translateX(20px);
+    }
+
+    .sidebar.open .sidebar-link {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .sidebar-link:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .sidebar-link svg {
+      margin-right: 0.75rem;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background-color: rgba(255, 255, 255, 0.1);
+      margin: 1rem 0;
+      width: 100%;
+    }
+
+    .sidebar-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: auto;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.3s ease 0.3s, transform 0.3s ease 0.3s;
+    }
+
+    .sidebar.open .sidebar-buttons {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Animation delays for sidebar links */
+    .sidebar-link:nth-child(1) { transition-delay: 0.1s; }
+    .sidebar-link:nth-child(2) { transition-delay: 0.15s; }
+    .sidebar-link:nth-child(3) { transition-delay: 0.2s; }
+    .sidebar-link:nth-child(4) { transition-delay: 0.25s; }
+
+    /* Hero section styles */
+    .hero {
+      position: relative;
+      min-height: calc(100vh - 76px);
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .hero-content {
+      max-width: 48rem;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+
+    .hero-title.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .gradient-text {
+      background: linear-gradient(to right, #c084fc, #ec4899);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-description {
+      color: #9ca3af;
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      max-width: 36rem;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s 0.2s, transform 0.5s 0.2s;
+    }
+
+    .hero-description.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s 0.4s, transform 0.5s 0.4s;
+    }
+
+    .hero-buttons.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .btn-large {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Floating papers */
+    .floating-papers {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .paper {
+      position: absolute;
+      width: 4rem;
+      height: 5rem;
+      background-color: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(4px);
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s;
+    }
+
+    .paper-icon {
+      width: 2rem;
+      height: 2rem;
+      color: rgba(168, 85, 247, 0.5);
+    }
+
+    /* Robot animation */
+    .robot-container {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 24rem;
+      height: 24rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .robot {
+      position: relative;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .robot-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 10rem;
+      height: 10rem;
+      background-color: rgba(168, 85, 247, 0.2);
+      border-radius: 50%;
+      filter: blur(2rem);
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    .robot-icon {
+      position: relative;
+      width: 8rem;
+      height: 8rem;
+      color: #a855f7;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.5;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.8;
+      }
+    }
+
+    /* Particles canvas */
+    #particles-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    /* Media queries */
+    @media (min-width: 768px) {
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+      }
+
+      .auth-buttons {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .menu-button {
+        display: none;
+      }
+
+      .hero-title {
+        font-size: 3.75rem;
+      }
+
+      .hero-buttons {
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .hero-title {
+        font-size: 4.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background grid -->
+  <div class="bg-grid"></div>
+
+  <!-- Three.js particles container -->
+  <div id="particles-canvas"></div>
+
+  <!-- Mobile sidebar overlay -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- Mobile sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-nav">
+      <a href="/features" class="sidebar-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+        </svg>
+        Features
+      </a>
+      <a href="/how-it-works" class="sidebar-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <path d="M12 17h.01"></path>
+        </svg>
+        How it Works
+      </a>
+      <a href="/examples" class="sidebar-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="7" height="7" x="3" y="3" rx="1"></rect>
+          <rect width="7" height="7" x="14" y="3" rx="1"></rect>
+          <rect width="7" height="7" x="14" y="14" rx="1"></rect>
+          <rect width="7" height="7" x="3" y="14" rx="1"></rect>
+        </svg>
+        Examples
+      </a>
+      <a href="/pricing" class="sidebar-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2v20"></path>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+        </svg>
+        Pricing
+      </a>
+    </div>
+    
+    <div class="sidebar-divider"></div>
+    
+    <div class="sidebar-buttons">
+      <button class="btn btn-ghost w-full">Sign In</button>
+      <button class="btn btn-primary w-full">Get Started</button>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="relative">
+    <!-- Navbar -->
+    <nav class="navbar">
+      <a style="font-size: 30px;" href="/" class="logo">
+        ⚡
+        <span class="logo-text">ByteMasters</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="/features" class="nav-link">Features</a>
+        <a href="/how-it-works" class="nav-link">How it Works</a>
+        <a href="/examples" class="nav-link">Examples</a>
+        <a href="/pricing" class="nav-link">Pricing</a>
+      </div>
+
+      <div class="auth-buttons">
+        <button class="btn btn-ghost">Sign In</button>
+        <button class="btn btn-primary">Get Started</button>
+      </div>
+
+      <button class="menu-button" id="menu-button">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="12" y2="12"></line>
+          <line x1="4" x2="20" y1="6" y2="6"></line>
+          <line x1="4" x2="20" y1="18" y2="18"></line>
+        </svg>
+      </button>
+    </nav>
+
+
+  </div>
+
+  <script>
+    // Initialize animations when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      // Animate hero elements
+      setTimeout(() => {
+        document.querySelector('.hero-title').classList.add('visible');
+      }, 100);
+      
+      setTimeout(() => {
+        document.querySelector('.hero-description').classList.add('visible');
+      }, 300);
+      
+      setTimeout(() => {
+        document.querySelector('.hero-buttons').classList.add('visible');
+      }, 500);
+
+      // Create floating papers
+      createFloatingPapers();
+      
+      // Initialize Three.js particles
+      initParticles();
+      
+      // Initialize sidebar
+      initSidebar();
+    });
+    
+    // Sidebar functionality
+    function initSidebar() {
+      const menuButton = document.getElementById('menu-button');
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      
+      // Toggle sidebar on menu button click
+      menuButton.addEventListener('click', () => {
+        toggleSidebar();
+      });
+      
+      // Close sidebar when clicking overlay
+      overlay.addEventListener('click', () => {
+        closeSidebar();
+      });
+      
+      // Close sidebar on escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeSidebar();
+        }
+      });
+      
+      function toggleSidebar() {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+        
+        // Toggle menu button icon between menu and close
+        if (sidebar.classList.contains('open')) {
+          menuButton.innerHTML = `
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
+            </svg>
+          `;
+        } else {
+          menuButton.innerHTML = `
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" x2="20" y1="12" y2="12"></line>
+              <line x1="4" x2="20" y1="6" y2="6"></line>
+              <line x1="4" x2="20" y1="18" y2="18"></line>
+            </svg>
+          `;
+        }
+        
+        // Prevent body scrolling when sidebar is open
+        document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+      }
+      
+      function closeSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+        
+        // Reset menu button icon
+        menuButton.innerHTML = `
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" x2="20" y1="12" y2="12"></line>
+            <line x1="4" x2="20" y1="6" y2="6"></line>
+            <line x1="4" x2="20" y1="18" y2="18"></line>
+          </svg>
+        `;
+      }
+    }
+
+
+
+    // Floating papers animation
+    function createFloatingPapers() {
+      const container = document.getElementById('floating-papers');
+      const paperCount = 6;
+      
+      for (let i = 0; i < paperCount; i++) {
+        const paper = document.createElement('div');
+        paper.className = 'paper';
+        
+        // Add paper icon
+        paper.innerHTML = `
+          <svg class="paper-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+          </svg>
+        `;
+        
+        // Set random initial position
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+        
+        paper.style.left = `${Math.random() * windowWidth}px`;
+        paper.style.top = `${Math.random() * windowHeight}px`;
+        
+        container.appendChild(paper);
+        
+        // Animate the paper
+        animatePaper(paper, windowWidth, windowHeight);
+      }
+    }
+
+    function animatePaper(paper, windowWidth, windowHeight) {
+      // Generate random positions for animation
+      const positions = [
+        {
+          x: Math.random() * windowWidth,
+          y: Math.random() * windowHeight,
+          rotation: Math.random() * 360
+        },
+        {
+          x: Math.random() * windowWidth,
+          y: Math.random() * windowHeight,
+          rotation: Math.random() * 360
+        },
+        {
+          x: Math.random() * windowWidth,
+          y: Math.random() * windowHeight,
+          rotation: Math.random() * 360
+        }
+      ];
+      
+      // Animation duration between 20-30 seconds
+      const duration = 20000 + Math.random() * 10000;
+      let startTime = null;
+      let currentPosition = 0;
+      
+      function animate(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+        
+        // Calculate progress between current position and next position
+        const positionProgress = (elapsed % (duration / 3)) / (duration / 3);
+        const currentIndex = Math.floor((elapsed % duration) / (duration / 3));
+        const nextIndex = (currentIndex + 1) % 3;
+        
+        // Interpolate between positions
+        const currentPos = positions[currentIndex];
+        const nextPos = positions[nextIndex];
+        
+        const x = currentPos.x + (nextPos.x - currentPos.x) * positionProgress;
+        const y = currentPos.y + (nextPos.y - currentPos.y) * positionProgress;
+        const rotation = currentPos.rotation + (nextPos.rotation - currentPos.rotation) * positionProgress;
+        
+        // Apply the new position
+        paper.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
+        
+        requestAnimationFrame(animate);
+      }
+      
+      requestAnimationFrame(animate);
+    }
+
+    // Three.js particles
+    function initParticles() {
+      // Create scene
+      const scene = new THREE.Scene();
+      
+      // Create camera
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 50;
+      
+      // Create renderer
+      const renderer = new THREE.WebGLRenderer({ alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor(0x000000, 0);
+      
+      // Add renderer to DOM
+      document.getElementById('particles-canvas').appendChild(renderer.domElement);
+      
+      // Create particles
+      const particlesGeometry = new THREE.BufferGeometry();
+      const particleCount = 1000; // Increased from 100 to 1000
+      
+      const positions = new Float32Array(particleCount * 3);
+      const sizes = new Float32Array(particleCount);
+      
+      for (let i = 0; i < particleCount; i++) {
+        // Position
+        positions[i * 3] = (Math.random() - 0.5) * 100;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 100;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
+        
+        // Size - making particles smaller
+        sizes[i] = Math.random() * 0.3 + 0.1; // Reduced from 0.8+0.6 to 0.3+0.1
+      }
+      
+      particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      particlesGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+      
+      // Create material
+      const particlesMaterial = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 0.2, // Reduced from 1 to 0.5
+        transparent: true,
+        opacity: 0.8,
+        sizeAttenuation: true
+      });
+      
+      // Create points
+      const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+      scene.add(particles);
+      
+      // Mouse interaction
+      let mouseX = 0;
+      let mouseY = 0;
+      
+      document.addEventListener('mousemove', (event) => {
+        mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+        mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        
+        // Add this to make particles move in the direction of mouse movement
+        const positions = particlesGeometry.attributes.position.array;
+        for (let i = 0; i < particleCount; i++) {
+          // Apply a small force in the mouse direction
+          positions[i * 3] += mouseX * 0.1;
+          positions[i * 3 + 1] += mouseY * 0.1;
+        }
+        particlesGeometry.attributes.position.needsUpdate = true;
+      });
+      
+      // Animation loop
+      function animate() {
+        requestAnimationFrame(animate);
+        
+        // Rotate particles
+        particles.rotation.x += 0.0009;
+        particles.rotation.y += 0.0009;
+        
+        // Mouse interaction
+        particles.rotation.x += mouseY * 0.02; // Increased from 0.0005 to 0.02
+        particles.rotation.y += mouseX * 0.02; // Increased from 0.0005 to 0.02
+        
+        // Update particle positions
+        const positions = particlesGeometry.attributes.position.array;
+        
+        for (let i = 0; i < particleCount; i++) {
+          // Slow movement
+          positions[i * 3] += Math.sin(i + Date.now() * 0.0001) * 0.01;
+          positions[i * 3 + 1] += Math.cos(i + Date.now() * 0.0001) * 0.01;
+        }
+        
+        particlesGeometry.attributes.position.needsUpdate = true;
+        
+        renderer.render(scene, camera);
+      }
+      
+      animate();
+      
+      // Handle window resize
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+  </script>
+</body>
+</html>

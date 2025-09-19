@@ -1,0 +1,41 @@
+:root {
+    --base-clr: #0a0a0f;
+    --black-clr: #070a09;
+    --line-clr: #48424a;
+    --hover-clr: #2e2233;
+    --accent-clr: #a855f7; 
+    --text-clr: #ffffff;
+    --secondary-text-clr: #9ca3af;
+    --negative-text-clr: #ff004a;
+    --positive-text-clr: rgb(0, 255, 145);
+    --pending-text-clr: rgb(255, 255, 0);
+    --info-clr: rgb(0, 145, 255);
+
+    --negative-bg-clr: rgba(231, 76, 60, 0.15);
+    --positive-bg-clr: rgba(46, 204, 113, 0.15); 
+    --pending-bg-clr: rgba(255, 255, 0, 0.15); 
+
+    --input-focus-clr: rgba(94, 99, 255, 0.1);
+
+} 
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
