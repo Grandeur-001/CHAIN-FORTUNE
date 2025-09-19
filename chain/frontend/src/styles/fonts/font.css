@@ -1,0 +1,24 @@
+/* dashboard font */
+@font-face {
+    font-family: REGULAR;
+    src: url(./AEONIK-REGULAR.OTF);
+}
+
+
+@font-face {
+    font-family: LIGHT;
+    src: url(./AEONIK-LIGHT.OTF);
+}
+
+@font-face {
+    font-family: BOLD;
+    src: url(./AEONIK-BOLD.OTF);
+}
+
+
+
+
+
+
+
+

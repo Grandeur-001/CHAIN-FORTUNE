@@ -1,0 +1,117 @@
+RewriteEngine On
+
+# ============================
+# CSS and Static File Routing
+# ============================
+
+# Route /styles/*.css to frontend/src/styles/*.css
+RewriteRule ^styles/(.*\.css)$ frontend/src/styles/$1 [L]
+
+# Route /font/* to frontend/src/images/logo/*
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^font/(.*)$ frontend/src/styles/fonts/$1 [L]
+
+# Route /img/* to backend/uploads/*
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^img/(.*)$ backend/uploads/$1 [L]
+
+# Route /qr-code/* to backend/code/*
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^qr-code/(.*)$ backend/code/$1 [L]
+
+# Route /deposit-qr-code/* to backend/code/*
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^deposit-qr-code/(.*)$ backend/code/deposit_qr_code/$1 [L]
+
+# Route /govt_id/* to backend/govt_id/*
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^govt_id/(.*)$ backend/govt_id/$1 [L]
+
+# Route /utility_bill/* to backend/utility_bill/*
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^utility_bill/(.*)$ backend/utility_bill/$1 [L]
+
+# Route /logo/* to frontend/src/images/logo/*
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^logo/(.*)$ frontend/src/images/logo/$1 [L]
+
+# Route /video/* to frontend/src/videos/*
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^video/(.*)$ frontend/src/videos/$1 [L]
+
+# Route /owlcarousel-js/* to frontend/src/owlcarousel/*
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^owlcarousel-js/(.*)$ frontend/src/owlcarousel/$1 [L]
+
+# Route /owl-carousel-css/* to frontend/src/owlcarousel/assets/*
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^owlcarousel-css/(.*)$ frontend/src/owlcarousel/assets/$1 [L]
+
+# Route /img/* to frontend/src/images/logo/*
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^images/(.*)$ frontend/src/images/$1 [L]
+
+
+# Route /js/* to frontend/src/js/*
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^js/(.*)$ frontend/src/js/$1 [L]
+
+
+
+
+# ============================
+# Admin and Auth Pages
+# ============================
+
+# Route /admin/{page} → frontend/src/admin/{page}.php
+RewriteRule ^admin/([a-zA-Z0-9_-]+)$ frontend/src/admin/$1.php [L]
+
+# Route /auth/{page} → frontend/src/auth/{page}.php
+RewriteRule ^auth/([a-zA-Z0-9_-]+)$ frontend/src/auth/$1.php [L]
+
+# ============================
+# User Pages
+# ============================
+
+# Only rewrite if file or folder doesn't exist
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# Route /{page} → frontend/src/user/{page}.php
+RewriteRule ^([a-zA-Z0-9_-]+)$ frontend/src/user/$1.php [L]
+
+# ============================
+# Fallback to General Pages
+# ============================
+
+# Only rewrite if file or folder doesn't exist
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# Route /{page} → frontend/src/pages/{page}.php
+RewriteRule ^page/([a-zA-Z0-9_-]+)$ frontend/src/pages/$1.php [L]
+
+# ============================
+# Backend Actions
+# ============================
+
+# Route /action/{file} → backend/{file}.php
+RewriteRule ^action/([a-zA-Z0-9_-]+)$ backend/$1.php [L]
+
+
+
+# Block direct access to frontend/src/
+# RewriteRule ^frontend/ - [F,L] 
+
+# Block direct access to backend/
+# RewriteRule ^backend/ - [F,L]
+
+
+
+
+
+
+
+
+
+
+
+

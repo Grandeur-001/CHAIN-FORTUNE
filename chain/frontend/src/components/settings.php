@@ -1,0 +1,459 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Chain Fortune</title>
+    <link rel="stylesheet" href="/chain-fortune/styles/style.css">
+    <script defer>
+        document.addEventListener("DOMContentLoaded", () => {
+            const sideBarItem = document.querySelectorAll("#sidebar ul li")[5]
+            sideBarItem.classList.add("active");
+
+            const navItem = document.querySelectorAll("#bottom_nav a")[0];
+            navItem.classList.add("active");
+        });
+    </script>
+    <style>
+        :root {
+            /* Additional vars for spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            
+            /* Border radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-full: 9999px;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+            
+            /* Transition */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+        }
+        #main{
+            margin-top: 11rem;
+            margin-left: 17rem;
+            transition: all 300ms ease-in-out;
+
+        }
+
+        .app-container {
+            padding: 20px;
+        }
+        @media (max-width: 800px) {
+            #main{
+                margin-left: 0;
+            }
+            .app-container {
+                padding: 0.7rem;
+            }
+        }
+        .settings-container{
+            h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: var(--space-md);
+            }
+
+            h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            }
+
+            h2 {
+            font-size: 1.25rem;
+            color: var(--text-clr);
+            }
+
+            h3 {
+            font-size: 1.125rem;
+            margin-bottom: var(--space-sm);
+            }
+
+            p {
+            margin-bottom: var(--space-md);
+            color: var(--secondary-text-clr);
+            }
+
+            .settings-header {
+            margin-bottom: var(--space-xl);
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--line-clr);
+            }
+
+            .settings-subtitle {
+            color: var(--secondary-text-clr);
+            font-weight: 400;
+            font-size: 0.9rem;
+            margin-top: var(--space-xs);
+            }
+
+            .settings-section {
+            margin-bottom: var(--space-xl);
+            background-color: var(--black-clr);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--line-clr);
+            }
+
+            .section-header {
+            padding: var(--space-md) var(--space-lg);
+            border-bottom: 1px solid var(--line-clr);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            }
+
+            .section-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background-color: var(--input-focus-clr);
+            border-radius: var(--radius-md);
+            color: var(--accent-clr);
+            }
+
+            .section-content {
+            padding: var(--space-lg);
+            }
+
+            .setting-item {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid var(--line-clr);
+            }
+
+            .setting-item:last-child {
+            border-bottom: none;
+            }
+
+            .setting-info {
+            flex: 1;
+            padding-right: var(--space-lg);
+            }
+
+            .setting-title {
+            font-weight: 500;
+            margin-bottom: var(--space-xs);
+            }
+
+            .setting-description {
+            font-size: 0.875rem;
+            color: var(--secondary-text-clr);
+            margin-bottom: 0;
+            }
+
+            .setting-control {
+            min-width: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            }
+
+            /* Toggle Switch */
+            .toggle {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+            }
+
+            .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            }
+
+            .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--line-clr);
+            transition: var(--transition-normal);
+            border-radius: var(--radius-full);
+            }
+
+            .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: var(--text-clr);
+            transition: var(--transition-normal);
+            border-radius: 50%;
+            }
+
+            input:checked + .toggle-slider {
+            background-color: var(--accent-clr);
+            }
+
+            input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+            }
+
+            /* Badge styles */
+            .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-left: var(--space-sm);
+            }
+
+            .badge-recommended {
+            background-color: var(--positive-bg-clr);
+            color: var(--positive-text-clr);
+            }
+
+            .badge-new {
+            background-color: var(--input-focus-clr);
+            color: var(--accent-clr);
+            }
+
+            .badge-required {
+            background-color: var(--negative-bg-clr);
+            color: var(--negative-text-clr);
+            }
+
+            .warning-box {
+            background-color: var(--negative-bg-clr);
+            border-left: 3px solid var(--negative-text-clr);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            margin: var(--space-md) 0;
+            }
+
+            .btn-group {
+            display: flex;
+            gap: var(--space-sm);
+            margin-top: var(--space-lg);
+            }
+
+            .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-sm) var(--space-lg);
+            background-color: var(--accent-clr);
+            color: var(--text-clr);
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color var(--transition-fast), transform var(--transition-fast);
+            }
+
+            .btn:hover {
+            background-color: #4b4eff;
+            }
+
+            .btn:active {
+            transform: translateY(1px);
+            }
+
+            .btn-secondary {
+            background-color: var(--hover-clr);
+            color: var(--text-clr);
+            }
+
+            .btn-secondary:hover {
+            background-color: #2c2e44;
+            }
+        }
+        
+
+         
+    </style>
+</head>
+
+
+<body>
+    
+    <?php include "../components/header.php"; ?>
+    <?php include "../components/sidebar.php"; ?>
+    <?php include "../components/toastify.php"; ?>
+
+    <script src="/chain-fortune/js/jquery-3.6.0.min.js"></script>
+    <script src="/chain-fortune/js/toastify.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/chain-fortune/js/sweetalert.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    
+    <main class="main" id="main">
+        <div class="app-container">
+            <div class="settings-container">
+                <header class="settings-header">
+                    <h1>Account Settings</h1>
+                    <p class="settings-subtitle">Manage your account preferences and security settings</p>
+                </header>
+
+                <!-- Security Section -->
+                <section class="settings-section">
+                    <div class="section-header">
+                        <h2>Security Settings</h2>
+                    </div>
+                <div class="section-content">
+                    <div class="setting-item">
+                    <div class="setting-info">
+                        <h3 class="setting-title">Enable Two-Factor Authentication <span class="badge badge-recommended">Recommended</span></h3>
+                        <p class="setting-description">Add an extra layer of security to your account with 2FA using an authenticator app.</p>
+                    </div>
+                    <div class="setting-control">
+                        <label class="toggle">
+                        <input type="checkbox">
+                        <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    </div>
+
+                    <div class="setting-item">
+                    <div class="setting-info">
+                        <h3 class="setting-title">Login Verification</h3>
+                        <p class="setting-description">Receive email alerts when your account is accessed from a new device or location.</p>
+                    </div>
+                    <div class="setting-control">
+                        <label class="toggle">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    </div>
+
+                    <div class="setting-item">
+                    <div class="setting-info">
+                        <h3 class="setting-title">Password Reset Protection</h3>
+                        <p class="setting-description">Require verification code during password reset process.</p>
+                    </div>
+                    <div class="setting-control">
+                        <label class="toggle">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    </div>
+
+                    <div class="warning-box">
+                    <p style="margin-bottom: 0;">Your password was last changed 90 days ago. We recommend updating your password regularly.</p>
+                    </div>
+                </div>
+                </section>
+
+                <!-- Notification Section -->
+                <section class="settings-section">
+                    <div class="section-header">
+                        <h2>Notification Preferences</h2>
+                    </div>
+                <div class="section-content">
+                    <div class="setting-item">
+                    <div class="setting-info">
+                        <h3 class="setting-title">Send confirmation OTP to my email when withdrawing my funds</h3>
+                        <p class="setting-description">Receive a one-time password via email for added security when making withdrawals.</p>
+                    </div>
+                    <div class="setting-control">
+                        <label class="toggle">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    </div>
+
+                    <div class="setting-item">
+                    <div class="setting-info">
+                        <h3 class="setting-title">Send me email when I get profit</h3>
+                        <p class="setting-description">Get notified whenever your investments generate profit.</p>
+                    </div>
+                    <div class="setting-control">
+                        <label class="toggle">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    </div>
+
+                    <div class="setting-item">
+                    <div class="setting-info">
+                        <h3 class="setting-title">Send me email when my investment plan expires</h3>
+                        <p class="setting-description">Get notified before and when your investment plans are about to expire.</p>
+                    </div>
+                    <div class="setting-control">
+                        <label class="toggle">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    </div>
+
+                    <div class="setting-item">
+                    <div class="setting-info">
+                        <h3 class="setting-title">Send me email when my account is accessed from a new device <span class="badge badge-required">Required</span></h3>
+                        <p class="setting-description">Get immediate notification when someone logs into your account from an unrecognized device.</p>
+                    </div>
+                    <div class="setting-control">
+                        <label class="toggle">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    </div>
+
+                    <div class="setting-item">
+                    <div class="setting-info">
+                        <h3 class="setting-title">Marketing communications</h3>
+                        <p class="setting-description">Receive updates about new features, promotions, and special offers.</p>
+                    </div>
+                    <div class="setting-control">
+                        <label class="toggle">
+                        <input type="checkbox">
+                        <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    </div>
+                </div>
+                </section>
+
+                <div class="btn-group">
+                    <button class="btn">Save Changes</button>
+                    <button class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+
+    <?php include "../components/footer.php"; ?>
+    <?php include "../components/bottom_nav.php"; ?>
+
+
+    
+    <script src="/chain-fortune/js/jquery-3.6.0.min.js"></script>
+    <script src="/chain-fortune/js/toggle_sidebar.js"></script>
+   
+
+
+
+</body>
+</html>
+
+

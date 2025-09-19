@@ -1,0 +1,10 @@
+{
+    "require": {
+        "vlucas/phpdotenv": "^5.6",
+        "phpmailer/phpmailer": "^6.10",
+        "dompdf/dompdf": "^3.1",
+        "endroid/qr-code": "^5.1",
+        "react/react": "*",
+        "workerman/workerman": "^5.1"
+    }
+}

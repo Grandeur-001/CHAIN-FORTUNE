@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Management - Crypto Investment Platform</title>
+    <style>
+        :root {
+            --base-clr: #11121a;
+            --black-clr: #07070a;
+            --line-clr: #42434a;
+            --hover-clr: #222533;
+            --text-clr: #e6e6ef;
+            --accent-clr: #5e63ff;
+            --secondary-text-clr: #b0b3c1;
+            --negative-text-clr: #ff004a;
+            --positive-text-clr: #10B981;
+            --pending-text-clr: #cdcd15;
+            --info-clr: rgb(0, 145, 255);
+            --negative-bg-clr: rgba(231, 76, 60, 0.15);
+            --positive-bg-clr: rgba(46, 204, 113, 0.15); 
+            --pending-bg-clr: rgba(255, 255, 0, 0.15); 
+            --input-focus-clr: rgba(94, 99, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html{
+            scrollbar-width: none;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--base-clr);
+            color: var(--text-clr);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-clr);
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: var(--secondary-text-clr);
+            max-width: 600px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--line-clr);
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            background: none;
+            border: none;
+            color: var(--secondary-text-clr);
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab-button:hover {
+            color: var(--text-clr);
+            background-color: var(--hover-clr);
+        }
+
+        .tab-button.active {
+            color: var(--accent-clr);
+            border-bottom-color: var(--accent-clr);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-clr);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--base-clr);
+            border: 1px solid var(--line-clr);
+            border-radius: 7px;
+            color: var(--text-clr);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-clr);
+            box-shadow: 0 0 0 4px var(--input-focus-clr);
+        }
+
+        .form-control::placeholder {
+            color: var(--secondary-text-clr);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent-clr);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #4c51e6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(94, 99, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--hover-clr);
+            color: var(--text-clr);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--line-clr);
+        }
+
+        .table-container {
+            border-radius: 7px;
+            overflow: hidden;
+            border: 1px solid var(--line-clr);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--line-clr);
+        }
+
+        .table th {
+            background-color: var(--black-clr);
+            font-weight: 600;
+            color: var(--text-clr);
+        }
+
+        .table td {
+            color: var(--secondary-text-clr);
+        }
+
+        .table tr:hover {
+            background-color: var(--hover-clr);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-delivered {
+            background-color: var(--positive-bg-clr);
+            color: var(--positive-text-clr);
+        }
+
+        .status-pending {
+            background-color: var(--pending-bg-clr);
+            color: var(--pending-text-clr);
+        }
+
+        .status-failed {
+            background-color: var(--negative-bg-clr);
+            color: var(--negative-text-clr);
+        }
+
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .card {
+            /* background-color: var(--black-clr); */
+            border: 1px solid var(--line-clr);
+            border-radius: 7px;
+            padding: 1.5rem;
+        }
+
+        .card h3 {
+            margin-bottom: 1rem;
+            color: var(--text-clr);
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        .select-wrapper::after {
+            content: '▼';
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-text-clr);
+            pointer-events: none;
+        }
+
+        select.form-control {
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            /* background-color: var(--black-clr); */
+            border: 1px solid var(--line-clr);
+            border-radius: 7px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-clr);
+        }
+
+        .stat-label {
+            color: var(--secondary-text-clr);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .tabs {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .tab-button {
+                border-bottom: none;
+                border-left: 3px solid transparent;
+                text-align: left;
+            }
+
+            .tab-button.active {
+                border-left-color: var(--accent-clr);
+                border-bottom-color: transparent;
+            }
+
+            .table-container {
+                overflow-x: auto;
+
+                .table{
+                    width: 1000px;
+                }
+            }
+
+            .table {
+                min-width: 600px;
+            }
+        }
+
+        .recipient-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .chip {
+            background-color: var(--hover-clr);
+            color: var(--text-clr);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chip-remove {
+            background: none;
+            border: none;
+            color: var(--secondary-text-clr);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .chip-remove:hover {
+            color: var(--negative-text-clr);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Email</h1>
+            <p>Manage your platform's email communication with users. Compose messages, view delivery reports, and customize automated email templates.</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab('send-email')">Send Email</button>
+            <button class="tab-button" onclick="showTab('edit-templates')">Edit Templates</button>
+            <button class="tab-button" onclick="showTab('view-logs')">View Logs</button>
+            <button class="tab-button" onclick="showTab('general-settings')">General Settings</button>
+        </div>
+
+        <!-- Send Email Section -->
+        <div id="send-email" class="tab-content active">
+            <div class="card">
+                <h3>Compose New Email</h3>
+                <form>
+                    <div class="form-group">
+                        <label for="recipients">Recipients</label>
+                        <div class="select-wrapper">
+                            <select id="recipients" class="form-control">
+                                <option value="all">All Users</option>
+                                <option value="segment">Specific Segment</option>
+                                <option value="ids">Individual IDs</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" class="form-control" placeholder="Enter email subject">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" class="form-control" placeholder="Compose your email message here..." rows="8"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn">Send Email</button>
+                        <button type="button" class="btn btn-secondary">Save as Draft</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Edit Templates Section -->
+        <div id="edit-templates" class="tab-content">
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3>Select Template</h3>
+                    <div class="form-group">
+                        <label for="template-select">Template</label>
+                        <div class="select-wrapper">
+                            <select id="template-select" class="form-control">
+                                <option value="welcome">Welcome Email</option>
+                                <option value="verification">Email Verification</option>
+                                <option value="password-reset">Password Reset</option>
+                                <option value="investment-update">Investment Update</option>
+                                <option value="withdrawal-confirmation">Withdrawal Confirmation</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary">Create New Template</button>
+                </div>
+
+                <div class="card">
+                    <h3>Template Editor</h3>
+                    <div class="form-group">
+                        <label for="template-name">Template Name</label>
+                        <input type="text" id="template-name" class="form-control" value="Welcome Email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="template-subject">Subject</label>
+                        <input type="text" id="template-subject" class="form-control" value="Welcome to CryptoInvest Platform">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="template-content">Content</label>
+                        <textarea id="template-content" class="form-control" rows="10">Dear {{user_name}},
+
+Welcome to CryptoInvest Platform! We're excited to have you join our community of investors.
+
+Your account has been successfully created and verified. You can now:
+- Browse investment opportunities
+- Make your first investment
+- Track your portfolio performance
+
+If you have any questions, our support team is here to help.
+
+Best regards,
+The CryptoInvest Team</textarea>
+                    </div>
+
+                    <button class="btn">Save Template</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Logs Section -->
+        <div id="view-logs" class="tab-content">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">1,247</div>
+                    <div class="stat-label">Total Sent</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1,198</div>
+                    <div class="stat-label">Delivered</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">892</div>
+                    <div class="stat-label">Opened</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">234</div>
+                    <div class="stat-label">Clicked</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Recipient</th>
+                            <th>Subject</th>
+                            <th>Delivery Status</th>
+                            <th>Opens</th>
+                            <th>Clicks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2024-01-15 14:30</td>
+                            <td>john.doe@email.com</td>
+                            <td>Investment Opportunity Alert</td>
+                            <td><span class="status-badge status-delivered">Delivered</span></td>
+                            <td>2</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>2024-01-15 14:25</td>
+                            <td>jane.smith@email.com</td>
+                            <td>Weekly Portfolio Update</td>
+                            <td><span class="status-badge status-delivered">Delivered</span></td>
+                            <td>1</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>2024-01-15 14:20</td>
+                            <td>mike.wilson@email.com</td>
+                            <td>Password Reset Request</td>
+                            <td><span class="status-badge status-pending">Pending</span></td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>2024-01-15 14:15</td>
+                            <td>sarah.johnson@email.com</td>
+                            <td>Welcome to CryptoInvest</td>
+                            <td><span class="status-badge status-failed">Failed</span></td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>2024-01-15 14:10</td>
+                            <td>robert.brown@email.com</td>
+                            <td>Withdrawal Confirmation</td>
+                            <td><span class="status-badge status-delivered">Delivered</span></td>
+                            <td>3</td>
+                            <td>2</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- General Settings Section -->
+        <div id="general-settings" class="tab-content">
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3>SMTP Configuration</h3>
+                    <div class="form-group">
+                        <label for="smtp-server">SMTP Server</label>
+                        <input type="text" id="smtp-server" class="form-control" placeholder="smtp.example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="smtp-port">Port</label>
+                        <input type="number" id="smtp-port" class="form-control" placeholder="587">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="smtp-username">Username</label>
+                        <input type="text" id="smtp-username" class="form-control" placeholder="your-email@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="smtp-password">Password</label>
+                        <input type="password" id="smtp-password" class="form-control" placeholder="••••••••">
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Email Settings</h3>
+                    <div class="form-group">
+                        <label for="from-address">From Address</label>
+                        <input type="email" id="from-address" class="form-control" placeholder="noreply@cryptoinvest.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="from-name">From Name</label>
+                        <input type="text" id="from-name" class="form-control" placeholder="CryptoInvest Platform">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reply-to">Reply-To Address</label>
+                        <input type="email" id="reply-to" class="form-control" placeholder="support@cryptoinvest.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="api-key">API Key</label>
+                        <input type="password" id="api-key" class="form-control" placeholder="••••••••••••••••">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button class="btn">Save Settings</button>
+                <button class="btn btn-secondary">Test Connection</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Add some interactivity for better UX
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-resize textareas
+            const textareas = document.querySelectorAll('textarea');
+            textareas.forEach(textarea => {
+                textarea.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = this.scrollHeight + 'px';
+                });
+            });
+
+            // Form submission handlers
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // Add your form submission logic here
+                    alert('Form submitted successfully!');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

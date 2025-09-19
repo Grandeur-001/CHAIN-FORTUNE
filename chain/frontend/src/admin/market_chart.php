@@ -1,0 +1,1 @@
+<?php include('../components/market_chart.php'); ?>

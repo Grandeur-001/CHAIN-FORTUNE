@@ -1,0 +1,11 @@
+<svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Upward Zigzag Arrow -->
+  <path d="M4 13L10 7L16 13L22 7" stroke="green" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M4 17L10 11L16 17L22 11" stroke="green" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+<svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Downward Zigzag Arrow -->
+  <path d="M4 11L10 17L16 11L22 17" stroke="red" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M4 7L10 13L16 7L22 13" stroke="red" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
